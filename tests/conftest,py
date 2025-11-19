@@ -1,0 +1,13 @@
+from fastapi.testclient import TestClient
+import pytest 
+from uploadFiles import app
+
+@pytest.fixture
+def client():
+    """
+    Provides a TestClient instance for the FastAPI application.
+
+    This fixture allows all tests to send simulated HTTP requests to the API
+    without running a real server.
+    """
+    return TestClient(app)

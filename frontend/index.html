@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="content">
+        <div class="upload">
+            <h2>🧠RAG Assistant</h2>
+            <button id="upload-btn" class="btn">Upload Document</button>
+            <input id="file-input" type="file" accept=".txt,.pdf,.csv" multiple hidden>
+            <ul id="list">
+                <li>TXT</li>
+                <li>PDF</li>
+                <li>CSV</li>
+            </ul>
+        </div>
+        <div class="empty"></div>
+         <div class="message">
+                <h2 class="header">Chat</h2>
+                <div id="chat-messages" class="chat-messages"></div>
+         </div>
+
+        <div class="result">
+                <h2 id="title-retrieved">Retrieved Document</h2>
+                <textarea id="retrieved-data"></textarea>
+            </div>
+
+            <div class="input">
+            <input type="text" id="user-input" placeholder="Type a message...">
+            <button type="button" id="send-btn" class="btn">Send</button>
+            </div>
+    </div>
+    <script src="script.js">
+    </script>
+</body>
+</html>

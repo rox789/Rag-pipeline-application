@@ -1,0 +1,14 @@
+langchain
+langchain-community
+langchain-core
+faiss-cpu
+sentence-transformers
+openai
+python-dotenv
+fastapi
+uvicorn
+python-multipart
+transformers
+pypdf
+pytest
+langgraph
