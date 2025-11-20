@@ -84,8 +84,11 @@ pytest tests/test_main.py::test_split_documents_basic_split -v
 Known Limitations
 
 1.CSV documents require valid header rows to be parsed correctly
+
 2.Only the latest uploaded file is used; multiple documents are not indexed
+
 3.Vector store persistence behavior depends on runtime environment
+
 4.Error messages returned by /ask are not yet standardized into an exception handler
 
 These are planned improvements for future versions.
