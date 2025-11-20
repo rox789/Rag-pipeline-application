@@ -149,7 +149,7 @@ sendBtn.addEventListener("click", async () => {
             text: data.answer
         });
 
-        // ✅ NEW: Display retrieved chunks in textarea
+        //  NEW: Display retrieved chunks in textarea
         if (Array.isArray(data.context_chunks)) {
             const formatted = data.context_chunks
                 .map((chunk, index) => `--- Fragment ${index + 1} ---\n${chunk}`)
