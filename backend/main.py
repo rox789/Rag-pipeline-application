@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 from pathlib import Path
 from typing import List, Dict, Any
 from langchain_core.documents import Document
-import os
 
 INDEX_DIR = "db/faiss_index"
 
@@ -257,85 +256,3 @@ if __name__ == "__main__":
     import json
     print(json.dumps(response_json, indent=4, ensure_ascii=False))
     
-    
-def run_rag_with_memory(
-    query: str,
-    memory: List[Dict[str, str]],
-    docs_dir: str = "docs",
-    chunk_size: int = 300,
-    chunk_overlap: int = 50,
-    top_k: int = 3
-) -> Dict[str, Any]:
-    """
-    RAG + Conversational Memory
-
-    Args:
-        query: user question
-        memory: list of {"role": "user"/"assistant", "content": "..."} messages
-        docs_dir: folder with uploaded docs
-        top_k: number of retrieved chunks
-
-    Returns:
-        dict with answer, context_chunks, and updated memory
-    """
-
-    # 1. Load last document
-    documents = load_last_file_from_directory(docs_dir)
-
-    # 2. Split into chunks
-    splits = split_documents(
-        documents=documents,
-        chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap
-    )
-
-    # 3. Create FAISS VectorStore
-    vector_store = create_vector_store(splits)
-
-    # 4. Retrieve context
-    retriever = vector_store.as_retriever(search_kwargs={"k": top_k})
-    relevant_docs: List[Document] = retriever.invoke(query)
-
-    context = "\n\n".join([d.page_content for d in relevant_docs])
-
-    # 5. Prepare memory text (last 10 turns)
-    memory_text = ""
-    for m in memory[-10:]:
-        memory_text += f"{m['role'].capitalize()}: {m['content']}\n"
-
-    # 6. LLM
-    llm = get_llm()
-
-    prompt = f"""
-You are a document-based QA assistant.
-
-### Rules:
-- Use ONLY the context below.
-- Use conversation history only to keep consistency.
-- If answer is not in the document, reply exactly:
-  "I cannot answer this based on the uploaded document."
-- Keep answers short (1-3 sentences).
-
-### Conversation History:
-{memory_text}
-
-### Document Context:
-{context}
-
-### Question:
-{query}
-"""
-
-    response_text = llm.invoke(prompt)
-
-    # 7. Update memory
-    updated_memory = memory + [
-        {"role": "user", "content": query},
-        {"role": "assistant", "content": response_text}
-    ]
-
-    return {
-        "answer": response_text,
-        "context_chunks": [d.page_content for d in relevant_docs],
-        "memory": updated_memory
-    }

@@ -1,11 +1,10 @@
-import os
 import time
 import pytest
 from pathlib import Path
 from langchain_core.documents import Document
 
-from main import load_last_file_from_directory
-from main import split_documents
+from backend.main import load_last_file_from_directory
+from backend.main import split_documents
 
 def test_load_last_file_success(tmp_path):
     """

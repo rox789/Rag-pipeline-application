@@ -3,10 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import List
 from pathlib import Path
-from main import run_rag
+from backend.main import run_rag
 from pydantic import BaseModel
 import asyncio
-import json
 
 app = FastAPI()
 
